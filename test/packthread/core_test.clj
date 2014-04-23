@@ -1,6 +1,6 @@
 (ns packthread.core-test
   (:require [midje.sweet :refer :all]
-            [packthread.core :refer :all]))
+            [packthread.core :as pt]))
 
-(fact "I exist"
-  (+ 1 1) => 2)
+(facts "about `->`"
+  (pt/-> 42) => 42)
