@@ -4,7 +4,7 @@
 (defn- classify-form
   [form]
   (cond
-    ('#{if if-not} (first form))
+    ('#{if if-let if-not} (first form))
     :if
 
     :else
