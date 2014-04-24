@@ -1,15 +1,25 @@
 (ns packthread.core
   (:refer-clojure :exclude [->]))
 
-(defmulti thread (fn [value form] (first form)))
+(defn- classify-form
+  [form]
+  (cond
+    ('#{if if-not} (first form))
+    :if
+
+    :else
+    :default))
+
+(defmulti thread #(classify-form %2))
 
 (defmethod thread :default
   [value form]
   (apply list (first form) value (rest form)))
 
-(defmethod thread 'if
+(defmethod thread :if
   [value form]
-  (let [if-test (second form)
+  (let [if-type (first form)
+        if-test (second form)
         value-symbol (gensym)
         then (nth form 2)
         else (if (= 4 (count form))
@@ -18,7 +28,7 @@
         threaded-then (thread value-symbol then)
         threaded-else (thread value-symbol else)]
     `(let [~value-symbol ~value]
-       (if ~if-test
+       (~if-type ~if-test
          ~threaded-then 
          ~threaded-else))))
 
