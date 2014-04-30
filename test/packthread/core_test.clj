@@ -43,5 +43,12 @@
   (+>> [1] (map inc)) => [2]
   (+>> [1] (if true (map inc) (map dec))) => [2])
 
+(defn weirdo-land
+  [value into-fn]
+  (let [projection (* 2 (:hello value))
+        post-projection (into-fn projection)]
+    (assoc value :hello (/ post-projection 2))))
+
 (facts "about `in` inside `+>`"
-  (+> {:hello 42} (in :hello inc)) => {:hello 43})
+  (+> {:hello 42} (in :hello inc)) => {:hello 43}
+  (+> {:hello 42} (in weirdo-land inc)) => {:hello 85/2})
