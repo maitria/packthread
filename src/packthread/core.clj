@@ -1,8 +1,9 @@
 (ns packthread.core
-  (:refer-clojure :exclude [->])
   (:require [clojure.core.match :refer [match]]))
 
 (def if-like? #{'if 'if-not 'if-let})
+(def if-for-when {'when 'if,
+                  'when-not 'if-not})
 
 (defn thread
   [value form]
@@ -39,11 +40,12 @@
       `(let [~value-symbol ~value]
          (cond ~@clauses-with-else)))
 
-    [(['when test & body] :seq)]
+    [([when :guard if-for-when test & body] :seq)]
     (let [value-symbol (gensym)
-          threaded-body (reduce thread value-symbol body)]
+          threaded-body (reduce thread value-symbol body)
+          if (if-for-when when)]
       `(let [~value-symbol ~value]
-         (if ~test
+         (~if ~test
            ~threaded-body
            ~value-symbol)))
 
@@ -53,6 +55,6 @@
     :else
     (list form value)))
 
-(defmacro ->
+(defmacro +>
   [value & forms]
   (reduce thread value forms))
