@@ -8,7 +8,11 @@ FIXME
 
 ## License
 
-Copyright © 2014 FIXME
+Copyright 2014 Maitria
 
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+You have permission to use this in any way you like (modify it, sell it, republish it), 
+provided you agree to all the following conditions:
+
+* you don't mislead anyone about it
+* you don't interfere with our ability to use it
+* you release us from any claims of liability if it causes problems for you
