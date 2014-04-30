@@ -6,22 +6,30 @@
                   'when-not 'if-not
                   'when-let 'if-let})
 
-(defn thread
+(defn thread-first-list
   [value form]
+  (apply list (first form) value (rest form)))
+
+(defn thread-last-list
+  [value form]
+  (concat form [value]))
+
+(defn thread
+  [thread-list value form]
   (match [form]
     [([if :guard if-like? test then] :seq)]
     (let [value-symbol (gensym)]
       `(let [~value-symbol ~value]
          (~if ~test
-           ~(thread value-symbol then)
+           ~(thread thread-list value-symbol then)
            (identity ~value-symbol))))
 
     [([if :guard if-like? test then else] :seq)]
     (let [value-symbol (gensym)]
       `(let [~value-symbol ~value]
          (~if ~test
-           ~(thread value-symbol then)
-           ~(thread value-symbol else))))
+           ~(thread thread-list value-symbol then)
+           ~(thread thread-list value-symbol else))))
 
     [(['cond & clauses] :seq)]
     (let [value-symbol (gensym)
@@ -29,7 +37,7 @@
                                 (partition 2)
                                 (map (fn [[test branch]]
                                        [test
-                                        (thread value-symbol branch)]))
+                                        (thread thread-list value-symbol branch)]))
                                 (apply concat))
           has-else? (->> threaded-clauses
                          (partition 2)
@@ -43,7 +51,7 @@
 
     [([when :guard if-for-when test & body] :seq)]
     (let [value-symbol (gensym)
-          threaded-body (reduce thread value-symbol body)
+          threaded-body (reduce (partial thread thread-list) value-symbol body)
           if (if-for-when when)]
       `(let [~value-symbol ~value]
          (~if ~test
@@ -51,14 +59,18 @@
            ~value-symbol)))
 
     [(['do & body] :seq)]
-    (reduce thread value body)
+    (reduce (partial thread thread-list) value body)
 
-    [([f & r] :seq :guard list?)]
-    (apply list f value r)
+    [(f :guard list?)]
+    (thread-list value f)
 
     :else
     (list form value)))
 
 (defmacro +>
   [value & forms]
-  (reduce thread value forms))
+  (reduce (partial thread thread-first-list) value forms))
+
+(defmacro +>>
+  [value & forms]
+  (reduce (partial thread thread-last-list) value forms))
