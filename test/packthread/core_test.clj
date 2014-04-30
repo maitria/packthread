@@ -49,6 +49,9 @@
         post-projection (into-fn projection)]
     (assoc value :hello (/ post-projection 2))))
 
-(facts "about `in` inside `+>`"
+(facts "about `in`"
   (+> {:hello 42} (in :hello inc)) => {:hello 43}
-  (+> {:hello 42} (in weirdo-land inc)) => {:hello 85/2})
+  (+> {:hello 42} (in weirdo-land inc)) => {:hello 85/2}
+  (+>> {:hello [42]}
+       (in :hello
+         (map inc))) => {:hello [43]})
