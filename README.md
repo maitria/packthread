@@ -116,6 +116,10 @@ above.
 
 ```clojure
 (require '[packthread.core :refer :all])
+
+(+> 42
+    (if true
+      inc)) ;=> 43
 ```
 
 See [core_test.clj](test/packthread/core_test.clj) for examples of usage.
