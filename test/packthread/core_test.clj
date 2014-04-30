@@ -40,4 +40,5 @@
 
 (facts "about `+>>`"
   (+>> 42) => 42
-  (+>> [1] (map inc)) => [2])
+  (+>> [1] (map inc)) => [2]
+  (+>> [1] (if true (map inc) (map dec))) => [2])
