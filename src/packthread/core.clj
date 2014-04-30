@@ -1,36 +1,28 @@
 (ns packthread.core
-  (:refer-clojure :exclude [->]))
+  (:refer-clojure :exclude [->])
+  (:require [clojure.core.match :refer [match]]))
 
-(defn- classify-form
-  [form]
-  (cond
-    ('#{if if-let if-not} (first form))
-    :if
+(def if-like? #{'if 'if-not 'if-let})
 
-    :else
-    :default))
-
-(defmulti thread #(classify-form %2))
-
-(defmethod thread :default
+(defn thread
   [value form]
-  (apply list (first form) value (rest form)))
+  (match [form]
+    [([if :guard if-like? test then] :seq)]
+    (let [value-symbol (gensym)]
+      `(let [~value-symbol ~value]
+         (~if ~test
+           ~(thread value-symbol then)
+           (identity ~value-symbol))))
 
-(defmethod thread :if
-  [value form]
-  (let [if-type (first form)
-        if-test (second form)
-        value-symbol (gensym)
-        then (nth form 2)
-        else (if (= 4 (count form))
-               (nth form 3)
-               '(identity))
-        threaded-then (thread value-symbol then)
-        threaded-else (thread value-symbol else)]
-    `(let [~value-symbol ~value]
-       (~if-type ~if-test
-         ~threaded-then 
-         ~threaded-else))))
+    [([if :guard if-like? test then else] :seq)]
+    (let [value-symbol (gensym)]
+      `(let [~value-symbol ~value]
+         (~if ~test
+           ~(thread value-symbol then)
+           ~(thread value-symbol else))))
+
+    [([f & r] :seq :guard list?)]
+    (apply list f value r)))
 
 (defmacro ->
   [value & forms]
