@@ -20,4 +20,5 @@
     (p/-> 42 (if-let [x 1] (+ x))) => 43)
   (facts "about `cond` inside `->"
     (p/-> 42 (cond true (+ 1))) => 43
-    (p/-> 43 (cond false (+ 1) true (- 1))) => 42))
+    (p/-> 43 (cond false (+ 1) true (- 1))) => 42
+    (p/-> 42 (cond)) => 42))

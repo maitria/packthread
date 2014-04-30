@@ -28,9 +28,16 @@
                                 (map (fn [[test branch]]
                                        [test
                                         (thread value-symbol branch)]))
-                                (apply concat))]
+                                (apply concat))
+          has-else? (->> threaded-clauses
+                         (partition 2)
+                         (filter #(= :else %1))
+                         first)
+          clauses-with-else (if has-else?
+                              threaded-clauses
+                              (concat threaded-clauses [:else value-symbol]))]
       `(let [~value-symbol ~value]
-         (cond ~@threaded-clauses)))
+         (cond ~@clauses-with-else)))
 
     [([f & r] :seq :guard list?)]
     (apply list f value r)))
