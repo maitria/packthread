@@ -31,7 +31,7 @@
                                 (apply concat))
           has-else? (->> threaded-clauses
                          (partition 2)
-                         (filter #(= :else %1))
+                         (filter (fn [[test _]] (= :else test)))
                          first)
           clauses-with-else (if has-else?
                               threaded-clauses
