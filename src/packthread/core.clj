@@ -40,7 +40,10 @@
          (cond ~@clauses-with-else)))
 
     [([f & r] :seq :guard list?)]
-    (apply list f value r)))
+    (apply list f value r)
+
+    :else
+    (list form value)))
 
 (defmacro ->
   [value & forms]
