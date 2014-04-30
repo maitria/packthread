@@ -43,17 +43,15 @@
     (let [value-symbol (gensym)
           threaded-body (reduce thread value-symbol body)]
       `(let [~value-symbol ~value]
-         (when ~test ~threaded-body)))
+         (if ~test
+           ~threaded-body
+           ~value-symbol)))
 
     [([f & r] :seq :guard list?)]
     (apply list f value r)
 
     :else
     (list form value)))
-
-(comment
-  (macroexpand '(-> 42 (when true inc)))
-  )
 
 (defmacro ->
   [value & forms]

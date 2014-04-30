@@ -25,4 +25,6 @@
     (p/-> 42 (cond)) => 42
     (p/-> 42 (cond false (+ 1))) => 42)
   (facts "about `when` inside `->`"
-    (p/-> 42 (when true inc)) => 43))
+    (p/-> 42 (when true inc)) => 43
+    (p/-> 42 (when true)) => 42
+    (p/-> 42 (when false inc)) => 42))
