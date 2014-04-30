@@ -7,7 +7,35 @@
                             'when-let 'if-let})
 
 (defmacro in
-  [& args]
+  "Threads inner expressions through a projection of value.
+
+  projector is a function which takes two arguments: a value and a function.
+  It should apply the function to a _projection_ of the value, take the
+  function's result, and reassemble from that result a value which can be
+  used again in the outer context.
+
+  For example,
+
+    (+> 42
+        (in (fn [v f]
+              (* 2 (f (/ v 2))))
+          inc)) ;=> 42.5
+
+  This can be thought of as 'lifting' the body expressions into the 'world
+  where things are twice as large'.
+
+  As a special case, if projector is a keyword, in assumes that value is a
+  map and that sub-key are threaded through the inner expressions.
+
+  For example,
+
+    (+> {:hello 42}
+        (in :hello
+          (+ 5))) ;=> {:hello 47}
+
+  This macro can only be used inside +> or +>>.
+  "
+  [value projector & body]
   (throw (Exception. "packthread.core/in must be used inside `+>` or `+>>`")))
 
 (defn -lift-into-projection
@@ -86,9 +114,53 @@
     (list form value)))
 
 (defmacro +>
+  "Threads value through forms in much the same way as ->, except for special
+  handling of the following forms:
+  
+  if, if-not, if-let, when, when-not, when-let:
+
+    The value is threaded through the then and else clauses independently,
+    leaving the test conditions alone.  If an else clause is missing, it is
+    will be supplied as though the value had been threaded through identity
+    in that case.
+
+    For example,
+
+      (+> 42 (if true inc)) ;=> 43
+      (+> 42 (if false inc)) ;=> 42
+      
+    In when, when-not, and when-let forms, the value is threaded through each
+    form in the body, not just the last.
+
+  cond:
+
+    The test clauses are left untouched and the value is threaded through
+    the expr clauses of each condition.  If no :else condition was supplied,
+    +> pretends as though it has been (identity), and threads the value
+    through that.
+
+    For example,
+
+      (+> 42
+          (cond
+            (= 1 2)
+            inc)) ;=> 42
+
+      (+> 42
+          (cond
+            (= 1 1)
+            dec)) ;=> 41
+
+  do:
+    
+    The current expr is threaded through the body forms of the do.
+  "
   [value & forms]
   (reduce (partial thread thread-first-list) value forms))
 
 (defmacro +>>
+  "Threads value through forms in much the same way as ->>, except for special
+  handling of several forms.  These forms are documented in (doc +>)
+  "
   [value & forms]
   (reduce (partial thread thread-last-list) value forms))
