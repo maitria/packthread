@@ -17,4 +17,6 @@
     (p/-> 42 (if-not true (+ 1) (+ 2))) => 44
     (p/-> 42 (if-not false (+ 1) (+ 2))) => 43)
   (facts "about `if-let` inside `->"
-    (p/-> 42 (if-let [x 1] (+ x))) => 43))
+    (p/-> 42 (if-let [x 1] (+ x))) => 43)
+  (facts "about `cond` inside `->"
+    (p/-> 42 (cond true (+ 1))) => 43))

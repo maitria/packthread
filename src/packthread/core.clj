@@ -21,9 +21,21 @@
            ~(thread value-symbol then)
            ~(thread value-symbol else))))
 
+    [(['cond & clauses] :seq)]
+    (let [value-symbol (gensym)
+          threaded-clauses (->> clauses
+                                (partition 2)
+                                (map (fn [[test branch]]
+                                       [test
+                                        (thread value-symbol branch)]))
+                                (apply concat))]
+      `(let [~value-symbol ~value]
+         (cond ~@threaded-clauses)))
+
     [([f & r] :seq :guard list?)]
     (apply list f value r)))
 
 (defmacro ->
   [value & forms]
   (reduce thread value forms))
+
