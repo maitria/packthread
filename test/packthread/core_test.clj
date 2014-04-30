@@ -42,3 +42,6 @@
   (+>> 42) => 42
   (+>> [1] (map inc)) => [2]
   (+>> [1] (if true (map inc) (map dec))) => [2])
+
+(facts "about `in` inside `+>`"
+  (+> {:hello 42} (in :hello inc)) => {:hello 43})

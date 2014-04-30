@@ -1,20 +1,31 @@
 (ns packthread.core
   (:require [clojure.core.match :refer [match]]))
 
-(def if-like? #{'if 'if-not 'if-let})
-(def if-for-when {'when 'if,
-                  'when-not 'if-not
-                  'when-let 'if-let})
+(def ^:private if-like? #{'if 'if-not 'if-let})
+(def ^:private if-for-when {'when 'if
+                            'when-not 'if-not
+                            'when-let 'if-let})
 
-(defn thread-first-list
+(defmacro in
+  [& args]
+  (throw (Exception. "packthread.core/in must be used inside `+>` or `+>>`")))
+
+(defn -lift-into-projection
+  [value projector into-fn]
+  (let [projector (if (keyword? projector)
+                    #(update-in %1 [projector] %2)
+                    projector)]
+    (projector value into-fn)))
+
+(defn- thread-first-list
   [value form]
   (apply list (first form) value (rest form)))
 
-(defn thread-last-list
+(defn- thread-last-list
   [value form]
   (concat form [value]))
 
-(defn thread
+(defn- thread
   [thread-list value form]
   (match [form]
     [([if :guard if-like? test then] :seq)]
@@ -60,6 +71,13 @@
 
     [(['do & body] :seq)]
     (reduce (partial thread thread-list) value body)
+
+    [(['in projector & body] :seq)]
+    (let [projection-symbol (gensym)
+          threaded-body (reduce (partial thread thread-list) projection-symbol body)]
+      `(-lift-into-projection ~value ~projector
+         (fn [~projection-symbol]
+           ~threaded-body)))
 
     [(f :guard list?)]
     (thread-list value f)
