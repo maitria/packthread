@@ -3,7 +3,8 @@
 
 (def if-like? #{'if 'if-not 'if-let})
 (def if-for-when {'when 'if,
-                  'when-not 'if-not})
+                  'when-not 'if-not
+                  'when-let 'if-let})
 
 (defn thread
   [value form]

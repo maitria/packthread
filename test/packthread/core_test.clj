@@ -31,4 +31,7 @@
     (+> 42 (when true inc inc)) => 44)
   (facts "about `when-not` inside `+>"
     (+> 42 (when-not false inc)) => 43
-    (+> 42 (when-not true inc)) => 42))
+    (+> 42 (when-not true inc)) => 42)
+  (facts "about `when-let` inside `+>`"
+    (+> 42 (when-let [x 5] (+ x))) => 47
+    (+> 42 (when-let [x nil] (+ x))) => 42))
