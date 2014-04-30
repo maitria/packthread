@@ -39,13 +39,22 @@
       `(let [~value-symbol ~value]
          (cond ~@clauses-with-else)))
 
+    [(['when test & body] :seq)]
+    (let [value-symbol (gensym)
+          threaded-body (reduce thread value-symbol body)]
+      `(let [~value-symbol ~value]
+         (when ~test ~threaded-body)))
+
     [([f & r] :seq :guard list?)]
     (apply list f value r)
 
     :else
     (list form value)))
 
+(comment
+  (macroexpand '(-> 42 (when true inc)))
+  )
+
 (defmacro ->
   [value & forms]
   (reduce thread value forms))
-
