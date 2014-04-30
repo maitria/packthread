@@ -50,6 +50,9 @@
            ~threaded-body
            ~value-symbol)))
 
+    [(['do & body] :seq)]
+    (reduce thread value body)
+
     [([f & r] :seq :guard list?)]
     (apply list f value r)
 
