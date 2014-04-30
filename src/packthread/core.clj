@@ -100,6 +100,13 @@
     [(['do & body] :seq)]
     (reduce (partial thread thread-list) value body)
 
+    [(['let bindings & body] :seq)]
+    (let [value-symbol (gensym)
+          threaded-body (reduce (partial thread thread-list) value body)
+          new-bindings (concat [value-symbol value] bindings)]
+      `(let [~@new-bindings]
+         ~threaded-body))
+
     [(['in projector & body] :seq)]
     (let [projection-symbol (gensym)
           threaded-body (reduce (partial thread thread-list) projection-symbol body)]

@@ -19,6 +19,8 @@
     (+> 42 (if-not false (+ 1) (+ 2))) => 43)
   (facts "about `if-let` inside `+>"
     (+> 42 (if-let [x 1] (+ x))) => 43)
+  (facts "about `let` inside `+>`"
+    (+> 42 (let [x 1] (+ x))) => 43)
   (facts "about `cond` inside `+>"
     (+> 42 (cond true (+ 1))) => 43
     (+> 43 (cond false (+ 1) true (- 1))) => 42
