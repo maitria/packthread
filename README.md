@@ -65,6 +65,16 @@ For example,
     
 The current expr is threaded through the body forms of the do.
 
+#### let
+
+The current expression is threaded through the body of the let form, with the bindings in place. For example:
+
+```clojure
+(+> 42 
+  (let [x 1] 
+    (+ x))) ;=> 43
+```
+
 #### in
 
 Threads the inner expressions through a projection of value.
@@ -109,7 +119,7 @@ above.
 [Leiningen](http://github.com/technomancy/leiningen/) dependency information:
 
 ```
-[com.maitria/packthread "0.1.0"]
+[com.maitria/packthread "0.1.1"]
 ```
 
 ## Usage
