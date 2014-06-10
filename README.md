@@ -67,12 +67,35 @@ The current expr is threaded through the body forms of the do.
 
 #### let
 
-The current expression is threaded through the body of the let form, with the bindings in place. For example:
+The current expression is threaded through the body of the let form, with the
+bindings in place. For example:
 
 ```clojure
 (+> 42 
   (let [x 1] 
     (+ x))) ;=> 43
+```
+
+#### try
+
+The current expression is threaded through the body of the `try` form.  The
+_same_ value is threaded through each `catch` clause.  Any `finally` clauses
+are left alone.
+
+```clojure
+(+> 42 (try
+         inc
+	 (catch Exception e
+	   dec)) ;=> 43
+
+(+> 42 (try
+         (+ :foo)
+	 (catch Exception e
+	   dec))) ;=> 41
+
+(+> 42 (try
+         inc
+	 (finally dec))) ;=> 42
 ```
 
 #### in
