@@ -105,7 +105,10 @@
                                                [(['catch exception-kind exception-name & catch-body] :seq)]
                                                (let [threaded-catch-body (reduce (partial thread thread-list) value-symbol catch-body)]
                                                  `(catch ~exception-kind ~exception-name
-                                                    ~threaded-catch-body))))))]
+                                                    ~threaded-catch-body))
+                                                    
+                                               :else
+                                               try-clause))))]
       `(let [~value-symbol ~value]
          (try
            ~threaded-body
