@@ -88,6 +88,13 @@
       `(let [~value-symbol ~value]
          (cond ~@clauses-with-else)))
 
+    [(['try & body] :seq)]
+    (let [value-symbol (gensym)
+          threaded-body (reduce (partial thread thread-list) value-symbol body)]
+      `(let [~value-symbol ~value]
+         (try
+           ~threaded-body)))
+
     [([when :guard if-for-when test & body] :seq)]
     (let [value-symbol (gensym)
           threaded-body (reduce (partial thread thread-list) value-symbol body)

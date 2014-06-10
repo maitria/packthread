@@ -38,7 +38,9 @@
     (+> 42 (when-let [x 5] (+ x))) => 47
     (+> 42 (when-let [x nil] (+ x))) => 42)
   (facts "about `do` inside `+>`"
-    (+> 42 (do inc inc)) => 44))
+    (+> 42 (do inc inc)) => 44)
+  (facts "about `try` inside `+>`"
+    (+> 42 (try inc inc)) => 44))
 
 (facts "about `+>>`"
   (+>> 42) => 42
