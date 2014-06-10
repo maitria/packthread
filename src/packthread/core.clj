@@ -45,6 +45,12 @@
                     projector)]
     (projector value into-fn)))
 
+(defn- catch-clause?
+  [clause]
+  (and (list? clause)
+       (or (= 'catch (first clause))
+           (= 'finally (first clause)))))
+
 (defn- thread-first-list
   [value form]
   (apply list (first form) value (rest form)))
@@ -90,10 +96,20 @@
 
     [(['try & body] :seq)]
     (let [value-symbol (gensym)
-          threaded-body (reduce (partial thread thread-list) value-symbol body)]
+          catch-clauses (drop-while (complement catch-clause?) body)
+          body (take-while (complement catch-clause?) body)
+          threaded-body (reduce (partial thread thread-list) value-symbol body)
+          threaded-catch-clauses (->> catch-clauses
+                                      (map (fn [try-clause]
+                                             (match [try-clause]
+                                               [(['catch exception-kind exception-name & catch-body] :seq)]
+                                               (let [threaded-catch-body (reduce (partial thread thread-list) value-symbol catch-body)]
+                                                 `(catch ~exception-kind ~exception-name
+                                                    ~threaded-catch-body))))))]
       `(let [~value-symbol ~value]
          (try
-           ~threaded-body)))
+           ~threaded-body
+           ~@threaded-catch-clauses)))
 
     [([when :guard if-for-when test & body] :seq)]
     (let [value-symbol (gensym)

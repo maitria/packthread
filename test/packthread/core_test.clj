@@ -40,7 +40,8 @@
   (facts "about `do` inside `+>`"
     (+> 42 (do inc inc)) => 44)
   (facts "about `try` inside `+>`"
-    (+> 42 (try inc inc)) => 44))
+    (+> 42 (try inc inc)) => 44)
+    (+> 42 (try (+ :hello) (catch Exception e dec))) => 41)
 
 (facts "about `+>>`"
   (+>> 42) => 42
