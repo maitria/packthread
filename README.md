@@ -40,12 +40,30 @@ For example,
 In `when`, `when-not`, and `when-let` forms, the value is threaded through each
 form in the body, not just the last.
 
+#### case
+
+The values being compared are left untouched and the value is threaded through
+the expr clause of each condition.
+
+For example,
+
+```clojure
+(+> 42
+  (case 1
+    1 inc
+    2 dec)) ;=> 43
+
+(+> 42
+  (case 2
+    1 inc
+    2 dec)) ;=> 41
+```
+
 #### cond
 
-The test clauses are left untouched and the value is threaded through
-the expr clauses of each condition.  If no :else condition was supplied,
-`+>` pretends as though it has been (identity), and threads the value
-through that.
+The test clauses are left untouched and the value is threaded through the expr
+clauses of each condition.  If no :else condition was supplied, `+>` pretends
+as though it had been (identity), and threads the value through that.
 
 For example,
 
