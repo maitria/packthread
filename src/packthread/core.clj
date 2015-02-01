@@ -76,6 +76,17 @@
            ~(thread thread-list value-symbol then)
            ~(thread thread-list value-symbol else))))
 
+    [(['case expr & clauses] :seq)]
+    (let [value-symbol (gensym)
+          threaded-clauses (->> clauses
+                                (partition 2)
+                                (map (fn [[test branch]]
+                                       [test
+                                        (thread thread-list value-symbol branch)]))
+                                (apply concat))]
+      `(let [~value-symbol ~value]
+         (case ~expr ~@threaded-clauses)))
+
     [(['cond & clauses] :seq)]
     (let [value-symbol (gensym)
           threaded-clauses (->> clauses
