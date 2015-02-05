@@ -155,6 +155,17 @@ This macro can only be used inside `+>` or `+>>`.
 Threads expressions like `->>`, except with the handling of the special forms
 above.
 
+### `fn+>`
+
+Like fn, except threads the function's first argument through the body using
++> .  The parameter vector can be omitted, in which case the resulting function
+takes one parameter.
+
+```clojure
+((fn+> [x y] (+ x)) 7 3) ;=> 14
+((fn+> inc inc) 42) ;=> 44
+```
+
 ## Installing
 
 [Leiningen](http://github.com/technomancy/leiningen/) dependency information:

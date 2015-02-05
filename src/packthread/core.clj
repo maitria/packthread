@@ -211,6 +211,10 @@
 
 (defmacro fn+>
   [& args]
+  "Like fn, except threads the first argument through the body using +> .  The
+  fn parameters can be omitted, in which case the anonymous function takes one
+  parameter which is threaded threaded through the body.
+  "
   (let [[fn-args & fn-body] (if (vector? (first args))
                               args
                               (cons [(gensym)] args))]
