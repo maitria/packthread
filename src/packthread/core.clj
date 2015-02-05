@@ -211,7 +211,7 @@
 
 (defmacro fn+>
   [& args]
-  (let [[fn-args & fn-body] (if (and (seq args) (vector? (first args)))
+  (let [[fn-args & fn-body] (if (vector? (first args))
                               args
                               (cons [(gensym)] args))]
     `(fn ~fn-args
