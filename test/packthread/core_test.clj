@@ -64,3 +64,6 @@
   (+>> {:hello [42]}
        (in :hello
          (map inc))) => {:hello [43]})
+
+(facts "about `fn+>`"
+  ((fn+>) 42) => 42)

@@ -208,3 +208,7 @@
   "
   [value & forms]
   (reduce (partial thread thread-last-list) value forms))
+
+(defmacro fn+>
+  [& args]
+  `(fn [x#] x#))
