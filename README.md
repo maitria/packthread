@@ -131,7 +131,7 @@ For example,
 (+> 42
     (in (fn [v f]
 	  (* 2 (f (/ v 2))))
-      inc)) ;=> 42.5
+      inc)) ;=> 44
 ```
 
 This can be thought of as 'lifting' the body expressions into the 'world

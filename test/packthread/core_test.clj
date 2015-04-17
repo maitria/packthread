@@ -63,7 +63,11 @@
   (+> {:hello 42} (in weirdo-land inc)) => {:hello 85/2}
   (+>> {:hello [42]}
        (in :hello
-         (map inc))) => {:hello [43]})
+         (map inc))) => {:hello [43]}
+  (+> 42
+      (in (fn [v f]
+            (* 2 (f (/ v 2))))
+        inc)) => 44)
 
 (facts "about `fn+>`"
   ((fn+>) 42) => 42
