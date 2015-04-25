@@ -1,5 +1,6 @@
 (ns packthread.core
-  (:require [clojure.core.match :refer [match]]))
+  (:require [clojure.core.match :refer [match]]
+            [packthread.lenses :as lenses]))
 
 (def ^:private if-like? #{'if 'if-not 'if-let})
 (def ^:private if-for-when {'when 'if
@@ -41,7 +42,7 @@
 (defn -lift-into-projection
   [value projector into-fn]
   (let [projector (if (keyword? projector)
-                    #(update-in %1 [projector] %2)
+                    (lenses/under projector)
                     projector)]
     (projector value into-fn)))
 
