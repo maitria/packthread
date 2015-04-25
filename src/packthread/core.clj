@@ -39,11 +39,6 @@
   [value projector & body]
   (throw (Exception. "packthread.core/in must be used inside `+>` or `+>>`")))
 
-(defn -lift-into-projection
-  [value projector into-fn]
-  (let [projector (lenses/->lens projector)]
-    (projector value into-fn)))
-
 (defn- catch-clause?
   [clause]
   (and (list? clause)
@@ -146,9 +141,8 @@
     [(['in projector & body] :seq)]
     (let [projection-symbol (gensym)
           threaded-body (reduce (partial thread thread-list) projection-symbol body)]
-      `(-lift-into-projection ~value ~projector
-         (fn [~projection-symbol]
-           ~threaded-body)))
+      `((~lenses/->lens ~projector) ~value (fn [~projection-symbol]
+                                             ~threaded-body)))
 
     [(f :guard list?)]
     (thread-list value f)
