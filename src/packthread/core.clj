@@ -138,11 +138,11 @@
       `(let [~@new-bindings]
          ~threaded-body))
 
-    [(['in projector & body] :seq)]
-    (let [projection-symbol (gensym)
-          threaded-body (reduce (partial thread thread-list) projection-symbol body)]
-      `((~lenses/->lens ~projector) ~value (fn [~projection-symbol]
-                                             ~threaded-body)))
+    [(['in lens & body] :seq)]
+    (let [lens-symbol (gensym)
+          threaded-body (reduce (partial thread thread-list) lens-symbol body)]
+      `((~lenses/->lens ~lens) ~value (fn [~lens-symbol]
+                                        ~threaded-body)))
 
     [(f :guard list?)]
     (thread-list value f)
