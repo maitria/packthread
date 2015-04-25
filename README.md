@@ -118,7 +118,7 @@ are left alone.
 
 #### in
 
-Threads inner expressions through a lens of value.
+Threads inner expressions through a [lens] of value.
 
 lens is a function which takes two arguments: a value and a function.
 It should apply the function to a _projection_ of the value, take the
@@ -196,3 +196,5 @@ provided you agree to all the following conditions:
 * you don't mislead anyone about it
 * you don't interfere with our ability to use it
 * you release us from any claims of liability if it causes problems for you
+
+[lens]: http://repository.upenn.edu/cgi/viewcontent.cgi?article=1044&context=cis_reports
