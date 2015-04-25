@@ -41,9 +41,7 @@
 
 (defn -lift-into-projection
   [value projector into-fn]
-  (let [projector (if (keyword? projector)
-                    (lenses/under projector)
-                    projector)]
+  (let [projector (lenses/->lens projector)]
     (projector value into-fn)))
 
 (defn- catch-clause?
