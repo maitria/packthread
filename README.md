@@ -118,9 +118,9 @@ are left alone.
 
 #### in
 
-Threads the inner expressions through a projection of value.
+Threads inner expressions through a lens of value.
 
-projector is a function which takes two arguments: a value and a function.
+lens is a function which takes two arguments: a value and a function.
 It should apply the function to a _projection_ of the value, take the
 function's result, and reassemble from that result a value which can be
 used again in the outer context.
@@ -129,26 +129,26 @@ For example,
 
 ```clojure
 (+> 42
-    (in (fn [v f]
-	  (* 2 (f (/ v 2))))
-      inc)) ;=> 44
+(in (fn [v f]
+      (* 2 (f (/ v 2))))
+  inc)) ;=> 42.5
 ```
 
 This can be thought of as 'lifting' the body expressions into the 'world
 where things are twice as large'.
 
-As a special case, if projector is a keyword, in assumes that value is a
+As a special case, if lens is a keyword, in assumes that value is a
 map and that sub-key are threaded through the inner expressions.
 
 For example,
 
 ```clojure
 (+> {:hello 42}
-    (in :hello
-      (+ 5))) ;=> {:hello 47}
+(in :hello
+  (+ 5))) ;=> {:hello 47}
 ```
 
-This macro can only be used inside `+>` or `+>>`.
+This macro can only be used inside +> or +>>.
 
 ### `+>>`
 
