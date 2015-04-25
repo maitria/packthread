@@ -8,9 +8,9 @@
                             'when-let 'if-let})
 
 (defmacro in
-  "Threads inner expressions through a projection of value.
+  "Threads inner expressions through a lens of value.
 
-  projector is a function which takes two arguments: a value and a function.
+  lens is a function which takes two arguments: a value and a function.
   It should apply the function to a _projection_ of the value, take the
   function's result, and reassemble from that result a value which can be
   used again in the outer context.
@@ -25,7 +25,7 @@
   This can be thought of as 'lifting' the body expressions into the 'world
   where things are twice as large'.
 
-  As a special case, if projector is a keyword, in assumes that value is a
+  As a special case, if lens is a keyword, in assumes that value is a
   map and that sub-key are threaded through the inner expressions.
 
   For example,
@@ -36,7 +36,7 @@
 
   This macro can only be used inside +> or +>>.
   "
-  [value projector & body]
+  [value lens & body]
   (throw (Exception. "packthread.core/in must be used inside `+>` or `+>>`")))
 
 (defn- catch-clause?
