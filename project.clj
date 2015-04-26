@@ -7,7 +7,4 @@
                  [org.clojure/core.match "0.2.1"]]
   :profiles {:dev {:dependencies [[midje "1.6.3"]]
                    :plugins [[lein-midje "3.1.1"]
-                             [net.eraserhead.clojure/lein-release "1.0.6"]]}}
-  :lein-release {:scm :git,
-                 :deploy-via :clojars,
-                 :tag-format ["v" :version]})
+                             [net.eraserhead.clojure/lein-release "1.0.6"]]}})
