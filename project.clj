@@ -6,4 +6,12 @@
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [org.clojure/core.match "0.2.1"]]
   :profiles {:dev {:dependencies [[midje "1.6.3"]]
-                   :plugins [[lein-midje "3.1.1"]]}})
+                   :plugins [[lein-midje "3.1.1"]]}}
+  :release-tasks [["vcs" "assert-committed"]
+                  ["change" "version" "leiningen.release/bump-version" "release"]
+                  ["vcs" "commit"]
+                  ["vcs" "tag" "v"]
+                  ["deploy" "clojars"]
+                  ["change" "version" "leiningen.release/bump-version"]
+                  ["vcs" "commit"]
+                  ["vcs" "push"]])
