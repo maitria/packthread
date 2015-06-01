@@ -4,8 +4,9 @@
 (defn under
   "A lens which focuses the value under `kw` in the map"
   [kw]
-  (fn [v f]
-    (update-in v [kw] f)))
+  (fn 
+    ([v] (get v kw))
+    ([v u] (assoc v kw u))))
 
 (defn ->lens
   "Coerce thing to a lens.  If it is a keyword, the lens is (under thing);
@@ -16,8 +17,8 @@
 
 (defn identity
   "The identity lens: f is applied to v."
-  [v f]
-  (f v))
+  ([v] v)
+  ([v u] u))
 
 (defn comp
   "Compose multiple lenses - analogous to functional composition.
@@ -30,7 +31,8 @@
   ([a b] 
    (let [a (->lens a)
          b (->lens b)]
-     (fn [v f]
-       (a v #(b % f)))))
+     (fn 
+       ([v] (b (a v)))
+       ([v u] (a v (b (a v) u))))))
   ([a b & cs]
    (reduce comp (concat [a b] cs))))

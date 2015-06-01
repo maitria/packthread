@@ -53,10 +53,8 @@
   (+>> [1] (if true (map inc) (map dec))) => [2])
 
 (defn weirdo-land
-  [value into-fn]
-  (let [projection (* 2 (:hello value))
-        post-projection (into-fn projection)]
-    (assoc value :hello (/ post-projection 2))))
+  ([value] (* 2 (:hello value)))
+  ([value putback] (assoc value :hello (/ putback 2))))
 
 (facts "about `in`"
   (+> {:hello 42} (in :hello inc)) => {:hello 43}
@@ -65,8 +63,9 @@
        (in :hello
          (map inc))) => {:hello [43]}
   (+> 42
-      (in (fn [v f]
-            (* 2 (f (/ v 2))))
+      (in (fn
+            ([v] (/ v 2))
+            ([v u] (* u 2)))
         inc)) => 44)
 
 (facts "about `fn+>`"

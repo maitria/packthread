@@ -120,22 +120,23 @@ are left alone.
 
 Threads inner expressions through a [lens] of value.
 
-lens is a function which takes two arguments: a value and a function.
-It should apply the function to a _projection_ of the value, take the
-function's result, and reassemble from that result a value which can be
-used again in the outer context.
+lens is a function with two arities - 1 and 2.  The 1-arity body is the "get"
+function, while the 2-arity body is the "putback" function.  "get" lifts the
+value into the new context, while "putback" translates the value back to the
+original context.
 
 For example,
 
 ```clojure
 (+> 42
-(in (fn [v f]
-      (* 2 (f (/ v 2))))
-  inc)) ;=> 42.5
+(in (fn 
+      ([v] (/ v 2))
+      ([v u] (* u 2)))
+  inc)) ;=> 85/2
 ```
 
 This can be thought of as 'lifting' the body expressions into the 'world
-where things are twice as large'.
+where things are half as large'.
 
 As a special case, if lens is a keyword, in assumes that value is a
 map and that sub-key are threaded through the inner expressions.

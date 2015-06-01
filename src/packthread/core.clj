@@ -139,10 +139,13 @@
          ~threaded-body))
 
     [(['in lens & body] :seq)]
-    (let [lens-symbol (gensym)
-          threaded-body (reduce (partial thread thread-list) lens-symbol body)]
-      `((~lenses/->lens ~lens) ~value (fn [~lens-symbol]
-                                        ~threaded-body)))
+    (let [outside-value-symbol (gensym)
+          inside-value-symbol (gensym)
+          threaded-body (reduce (partial thread thread-list) inside-value-symbol body)]
+      `(let [lens# (~lenses/->lens ~lens)
+             ~outside-value-symbol ~value
+             ~inside-value-symbol (lens# ~outside-value-symbol)]
+         (lens# ~outside-value-symbol ~threaded-body)))
 
     [(f :guard list?)]
     (thread-list value f)
