@@ -214,6 +214,8 @@
   (let [[fn-args & fn-body] (if (vector? (first args))
                               args
                               (cons [(gensym)] args))]
-    `(fn ~fn-args
-       (+> ~(first fn-args)
-         ~@fn-body))))
+    `(with-meta 
+       (fn ~fn-args
+         (+> ~(first fn-args)
+           ~@fn-body))
+       ~(meta &form))))

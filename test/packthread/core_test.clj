@@ -73,4 +73,6 @@
   ((fn+> [arg]) 79) => 79
   ((fn+> (+ 1)) 42) => 43
   ((fn+> [x] (+ x)) 7) => 14
-  ((fn+> inc inc) 42) => 44)
+  ((fn+> inc inc) 42) => 44
+  (fact "metadata is passed through"
+    (meta ^{:foo :bar} (fn+> inc)) => (contains {:foo :bar})))
