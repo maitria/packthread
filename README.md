@@ -22,10 +22,9 @@ handling of the following forms:
   
 ####  if, if-not, if-let, when, when-not, when-let:
 
-The value is threaded through the then and else clauses independently,
+The value is threaded through the *then* and *else* clauses independently,
 leaving the test conditions alone.  If an else clause is missing, it is
-will be supplied as though the value had been threaded through identity
-in that case.
+will be supplied as though the value had been threaded through `identity`.
 
 For example,
 
@@ -34,8 +33,8 @@ For example,
 (+> 42 (if false inc)) ;=> 42
 ```
       
-In `when`, `when-not`, and `when-let` forms, the value is threaded through each
-form in the body, not just the last.
+In `when`, `when-not`, and `when-let` forms, the value is threaded through
+every form in the body, not just the last.
 
 #### case
 
@@ -59,8 +58,8 @@ For example,
 #### cond
 
 The test clauses are left untouched and the value is threaded through the expr
-clauses of each condition.  If no :else condition was supplied, `+>` pretends
-as though it had been (identity), and threads the value through that.
+clauses of each condition.  If there's no `:else` condition, `+>` pretends it
+was `(identity)`.
 
 For example,
 
@@ -94,8 +93,7 @@ bindings in place. For example:
 #### try
 
 The current expression is threaded through the body of the `try` form.  The
-_same_ value is threaded through each `catch` clause.  Any `finally` clauses
-are left alone.
+_same_ value is threaded through each `catch` clause and any `finally` clause.
 
 ```clojure
 (+> 42 (try
@@ -169,7 +167,7 @@ takes one parameter.
 [Leiningen](http://github.com/technomancy/leiningen/) dependency information:
 
 ```
-[com.maitria/packthread "0.1.1"]
+[com.maitria/packthread "0.1.7"]
 ```
 
 ## Usage
