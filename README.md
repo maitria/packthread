@@ -1,22 +1,19 @@
 # packthread
 
-Threading macros for working with globs of state.
+"Smarter" threading macros.
 
 ## Why?
 
-Many descriptions about state in Clojure fit into the following form:
+Because every time you've wanted to:
 
-> State is hard to reason about, and so we use pure functions in Clojure.  But then
-> we have a problem, we need to pass around _all_ the application's state. And that's
-> just too hard, and it's basically just like having all the global variables anyway,
-> and you've coupled every function in the system to this big ball of mud. So we need
-> to separate it out and encapsulate and therefore we've invented $library which does
-> _x_, where _x_ ∈ {_OO programming_, _global mutable state_, _..._}.
+```clojure
+(-> 42
+  (let [x 79]
+    (+ x)
+  inc)
+```
 
-Packthread is for threading state through programs in a simple, composable way.  It
-does not compromise the ability to be functionally pure or reason about one's program.
-It's pretty similar to the `->` and `->>` macros, with a helper macro named `in` for
-creating different _projections_ of the state to manipulate with different functions.
+but clojure wouldn't let you.
 
 ### `+>`
 
