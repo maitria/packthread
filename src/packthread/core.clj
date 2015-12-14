@@ -211,11 +211,14 @@
   fn parameters can be omitted, in which case the anonymous function takes one
   parameter which is threaded threaded through the body.
   "
-  (let [[fn-args & fn-body] (if (vector? (first args))
-                              args
-                              (cons [(gensym)] args))]
-    `(with-meta 
+  (let [arg1 (gensym)
+        [original-arg1 fn-args fn-body] (if (vector? (first args))
+                                          [(ffirst args)
+                                           (vec (cons arg1 (rest (first args))))
+                                           (rest args)]
+                                          [arg1 [arg1] args])]
+    `(with-meta
        (fn ~fn-args
-         (+> ~(first fn-args)
-           ~@fn-body))
+         (let [~original-arg1 ~arg1]
+           (+> ~arg1 ~@fn-body)))
        ~(meta &form))))

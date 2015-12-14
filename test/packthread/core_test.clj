@@ -75,4 +75,9 @@
   ((fn+> [x] (+ x)) 7) => 14
   ((fn+> inc inc) 42) => 44
   (fact "metadata is passed through"
-    (meta ^{:foo :bar} (fn+> inc)) => (contains {:foo :bar})))
+    (meta ^{:foo :bar} (fn+> inc)) => (contains {:foo :bar}))
+  (fact "works with destructuring arguments"
+    ((fn+> [{:keys [foo]}]
+       (assoc :foo 79)
+       (merge {:bar (inc foo)}))
+     {:foo 42}) => (contains {:bar 43})))
