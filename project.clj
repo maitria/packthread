@@ -1,4 +1,4 @@
-(defproject com.maitria/packthread "0.1.9-SNAPSHOT"
+(defproject com.maitria/packthread "0.1.9"
   :description "Threading macros for working with globs of state"
   :url "https://github.com/maitria/packthread"
   :license {:name "avi license"
