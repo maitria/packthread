@@ -36,6 +36,7 @@
 
   This macro can only be used inside +> or +>>.
   "
+  {:style/indent 1}
   [value lens & body]
   (throw (Exception. "packthread.core/in must be used inside `+>` or `+>>`")))
 
@@ -195,22 +196,25 @@
     
     The current expr is threaded through the body forms of the do.
   "
+  {:style/indent 1}
   [value & forms]
   (reduce (partial thread thread-first-list) value forms))
 
 (defmacro +>>
   "Threads value through forms in much the same way as ->>, except for special
-  handling of several forms.  These forms are documented in (doc +>)
+  handling of several forms.  These forms are documented in (doc +>).
   "
+  {:style/indent 1}
   [value & forms]
   (reduce (partial thread thread-last-list) value forms))
 
 (defmacro fn+>
-  [& args]
   "Like fn, except threads the first argument through the body using +> .  The
   fn parameters can be omitted, in which case the anonymous function takes one
   parameter which is threaded threaded through the body.
   "
+  {:style/indent :defn}
+  [& args]
   (let [arg1 (gensym)
         [original-arg1 fn-args fn-body] (if (vector? (first args))
                                           [(ffirst args)
