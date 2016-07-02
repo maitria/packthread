@@ -9,7 +9,7 @@ Because every time you've wanted to:
 ```clojure
 (-> 42
   (let [x 79]
-    (+ x)
+    (+ x))
   inc)
 ```
 
