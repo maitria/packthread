@@ -44,6 +44,9 @@
   (facts "about `when-let` inside `+>`"
     (+> 42 (when-let [x 5] (+ x))) => 47
     (+> 42 (when-let [x nil] (+ x))) => 42)
+  (facts "about `when-some` inside `+>"
+    (+> 42 (when-some [x 5] (+ x))) => 47
+    (+> 42 (when-some [x nil] (+ x))) => 42)
   (facts "about `do` inside `+>`"
     (+> 42 (do inc inc)) => 44)
   (facts "about `try` inside `+>`"

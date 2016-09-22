@@ -5,7 +5,8 @@
 (def ^:private if-like? #{'if 'if-not 'if-let 'if-some})
 (def ^:private if-for-when {'when 'if
                             'when-not 'if-not
-                            'when-let 'if-let})
+                            'when-let 'if-let
+                            'when-some 'if-some})
 
 (defmacro in
   "Threads inner expressions through a lens of value.
