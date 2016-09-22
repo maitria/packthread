@@ -2,7 +2,7 @@
   (:require [clojure.core.match :refer [match]]
             [packthread.lenses :as lenses]))
 
-(def ^:private if-like? #{'if 'if-not 'if-let})
+(def ^:private if-like? #{'if 'if-not 'if-let 'if-some})
 (def ^:private if-for-when {'when 'if
                             'when-not 'if-not
                             'when-let 'if-let})

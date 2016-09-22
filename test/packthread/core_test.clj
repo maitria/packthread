@@ -19,6 +19,13 @@
     (+> 42 (if-not false (+ 1) (+ 2))) => 43)
   (facts "about `if-let` inside `+>"
     (+> 42 (if-let [x 1] (+ x))) => 43)
+  (facts "about `if-some` inside `+>`"
+    (+> 42 (if-some [x nil] inc)) => 42
+    (+> 42 (if-some [x false] inc)) => 43
+    (+> 42 (if-some [x 2] (+ x))) => 44
+    (+> 42 (if-some [x nil] inc dec)) => 41
+    (+> 42 (if-some [x false] inc dec)) => 43
+    (+> 42 (if-some [x 2] (+ x) dec)) => 44)
   (facts "about `let` inside `+>`"
     (+> 42 (let [x 1] (+ x))) => 43)
   (facts "about `cond` inside `+>"
