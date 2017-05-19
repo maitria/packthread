@@ -1,5 +1,7 @@
 # packthread
 
+https://github.com/maitria/packthread
+
 "Smarter" threading macros.
 
 ## Why?
