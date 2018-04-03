@@ -22,7 +22,7 @@ but clojure wouldn't let you.
 Threads value through forms in much the same way as `->`, except for special
 handling of the following forms:
   
-####  if, if-not, if-let, when, when-not, when-let:
+####  if, if-not, if-let, if-some, when, when-let, when-not, when-some
 
 The value is threaded through the *then* and *else* clauses independently,
 leaving the test conditions alone.  If an else clause is missing, it is
@@ -35,8 +35,8 @@ For example,
 (+> 42 (if false inc)) ;=> 42
 ```
       
-In `when`, `when-not`, and `when-let` forms, the value is threaded through
-every form in the body, not just the last.
+In `when`, `when-let`, `when-not`, and `when-some` forms, the value is
+threaded through every form in the body, not just the last.
 
 #### case
 
@@ -169,7 +169,7 @@ takes one parameter.
 [Leiningen](http://github.com/technomancy/leiningen/) dependency information:
 
 ```
-[com.maitria/packthread "0.1.7"]
+[com.maitria/packthread "0.1.10"]
 ```
 
 ## Usage
