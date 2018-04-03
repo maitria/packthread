@@ -51,8 +51,8 @@
     (+> 42 (do inc inc)) => 44)
   (facts "about `try` inside `+>`"
     (+> 42 (try inc inc)) => 44)
-    (+> 42 (try (+ :hello) (catch Exception e dec))) => 41
-    (+> 42 (try inc (finally 45))) => 43
+  (+> 42 (try (+ :hello) (catch Exception e dec))) => 41
+  (+> 42 (try inc (finally 45))) => 43
   (facts "about `case` inside `+>`"
     (+> 42 (case 1 1 (+ 1) 2 (- 1))) => 43
     (+> 42 (case 2 1 (+ 1) 2 (- 1))) => 41))

@@ -3,9 +3,9 @@
   :url "https://github.com/maitria/packthread"
   :license {:name "avi license"
             :url "http://github.com/maitria/avi/README.md"}
-  :dependencies [[org.clojure/clojure "1.6.0"]
+  :dependencies [[org.clojure/clojure "1.9.0"]
                  [org.clojure/core.match "0.2.1"]]
-  :profiles {:dev {:dependencies [[midje "1.6.3"]]
+  :profiles {:dev {:dependencies [[midje "1.9.1"]]
                    :plugins [[lein-midje "3.1.1"]]}}
   :release-tasks [["vcs" "assert-committed"]
                   ["change" "version" "leiningen.release/bump-version" "release"]
