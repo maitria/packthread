@@ -7,6 +7,9 @@
                  [org.clojure/core.match "0.2.1"]]
   :profiles {:dev {:dependencies [[midje "1.9.1"]]
                    :plugins [[lein-midje "3.1.1"]]}}
+  :deploy-repositories [["clojars" {:url "https://clojars.org/repo"
+                                    :username :env/clojars_username
+                                    :password :env/clojars_password}]]
   :release-tasks [["vcs" "assert-committed"]
                   ["change" "version" "leiningen.release/bump-version" "release"]
                   ["vcs" "commit"]
