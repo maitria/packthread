@@ -2,7 +2,7 @@
 
 https://github.com/maitria/packthread
 
-"Smarter" threading macros.
+"Heavy" threading macros.
 
 ## Why?
 
